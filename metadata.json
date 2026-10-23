@@ -1,0 +1,8 @@
+{
+  "name": "Sistem Manajemen Muatan Kapal & Manifest Penumpang",
+  "description": "Aplikasi operasional pelabuhan dan armada kapal untuk pengelolaan master data, transaksi muatan kargo, manifest penumpang, analitik real-time, dan konektivitas database (Supabase, Neon, Firebase).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
