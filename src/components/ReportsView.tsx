@@ -196,7 +196,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60">
               <span className="text-[11px] text-slate-400 block">Total Penerimaan Voyage</span>
               <span className="text-sm font-bold text-emerald-400 block mt-0.5">
-                Rp {totalVoyageRevenue.toLocaleString('id-ID')}
+                Rp {(Number(totalVoyageRevenue) || 0).toLocaleString('id-ID')}
               </span>
               <span className="text-[11px] text-slate-400 block mt-0.5">Status: Lunas & Terverifikasi</span>
             </div>
@@ -369,7 +369,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
               <span className="text-xs text-slate-400">Pendapatan Tiket Penumpang</span>
               <p className="text-xl font-bold text-emerald-400 mt-1">
-                Rp {passengerRevenue.toLocaleString('id-ID')}
+                Rp {(Number(passengerRevenue) || 0).toLocaleString('id-ID')}
               </p>
               <p className="text-[11px] text-slate-500 mt-1">{voyagePassengers.length} Tiket Terbit</p>
             </div>
@@ -377,7 +377,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
               <span className="text-xs text-slate-400">Pendapatan Muatan Kendaraan & Kargo</span>
               <p className="text-xl font-bold text-purple-400 mt-1">
-                Rp {cargoRevenue.toLocaleString('id-ID')}
+                Rp {(Number(cargoRevenue) || 0).toLocaleString('id-ID')}
               </p>
               <p className="text-[11px] text-slate-500 mt-1">{voyageCargo.length} Bill of Lading (BL)</p>
             </div>
@@ -385,7 +385,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             <div className="p-4 rounded-xl bg-slate-950 border border-slate-800">
               <span className="text-xs text-slate-400">Total Bruto Operasional</span>
               <p className="text-xl font-bold text-cyan-400 mt-1">
-                Rp {totalVoyageRevenue.toLocaleString('id-ID')}
+                Rp {(Number(totalVoyageRevenue) || 0).toLocaleString('id-ID')}
               </p>
               <p className="text-[11px] text-emerald-400 mt-1">Status: Lunas 100%</p>
             </div>

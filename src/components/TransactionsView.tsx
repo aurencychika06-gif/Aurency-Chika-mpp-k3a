@@ -584,7 +584,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                       <div className="text-[11px] text-slate-300 font-mono mt-0.5">Kursi: {p.seatNumber}</div>
                     </td>
                     <td className="px-4 py-3 font-semibold text-emerald-400">
-                      Rp {p.fare.toLocaleString('id-ID')}
+                      Rp {(Number(p.fare) || 0).toLocaleString('id-ID')}
                     </td>
                     <td className="px-4 py-3">
                       <button
@@ -678,7 +678,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                       <div className="text-[10px] text-slate-500 font-mono">➔ {c.consigneeName}</div>
                     </td>
                     <td className="px-4 py-3 font-semibold text-emerald-400">
-                      Rp {c.totalPrice.toLocaleString('id-ID')}
+                      Rp {(Number(c.totalPrice) || 0).toLocaleString('id-ID')}
                     </td>
                     <td className="px-4 py-3">
                       <select

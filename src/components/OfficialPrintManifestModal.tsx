@@ -90,7 +90,7 @@ export const OfficialPrintManifestModal: React.FC<OfficialPrintManifestModalProp
             <div className="space-y-1">
               <div><strong>Nomor Keberangkatan (Voyage):</strong> {voyage.voyageNumber}</div>
               <div><strong>Pelabuhan Asal ➔ Tujuan:</strong> {voyage.originPortName} ➔ {voyage.destinationPortName}</div>
-              <div><strong>Waktu Berangkat (ETD):</strong> {new Date(voyage.departureTime).toLocaleString('id-ID')}</div>
+              <div><strong>Waktu Berangkat (ETD):</strong> {voyage.departureTime ? new Date(voyage.departureTime).toLocaleString('id-ID') : '-'}</div>
               <div><strong>Dermaga Keberangkatan:</strong> {voyage.berthPier}</div>
               <div><strong>No. SPB (Surat Persetujuan Berlayar):</strong> {voyage.spbApprovalNumber}</div>
             </div>

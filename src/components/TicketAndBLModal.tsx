@@ -85,7 +85,7 @@ export const TicketAndBLModal: React.FC<TicketAndBLModalProps> = ({
               </div>
               <div>
                 <span className="text-[10px] text-slate-400 block">Tarif Tiket</span>
-                <strong className="text-xs text-emerald-700">Rp {passenger.fare.toLocaleString('id-ID')} (LUNAS)</strong>
+                <strong className="text-xs text-emerald-700">Rp {(Number(passenger.fare) || 0).toLocaleString('id-ID')} (LUNAS)</strong>
               </div>
             </div>
 
@@ -170,7 +170,7 @@ export const TicketAndBLModal: React.FC<TicketAndBLModalProps> = ({
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] text-slate-400 block">Total Biaya Angkut</span>
-                  <strong className="text-sm text-emerald-700">Rp {cargo.totalPrice.toLocaleString('id-ID')}</strong>
+                  <strong className="text-sm text-emerald-700">Rp {(Number(cargo.totalPrice) || 0).toLocaleString('id-ID')}</strong>
                 </div>
               </div>
             </div>

@@ -53,6 +53,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onOpenAssignmentModal
 }) => {
   const [selectedVoyageFilter, setSelectedVoyageFilter] = useState<'ALL' | 'BERLAYAR' | 'BOARDING' | 'TERJADWAL'>('ALL');
+  const [copiedQuick, setCopiedQuick] = useState(false);
 
   // KPI calculations
   const totalVessels = vessels.length;
@@ -150,12 +151,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <button
             onClick={() => {
               navigator.clipboard.writeText('https://ais-pre-ntxkfyok5lrcbvlwmvkd67-897898967019.asia-southeast1.run.app');
-              alert('Link Web Tugas berhasil disalin! Silakan tempel di formulir pengumpulan tugas Anda.');
+              setCopiedQuick(true);
+              setTimeout(() => setCopiedQuick(false), 3000);
             }}
-            className="flex-1 md:flex-none px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-white font-bold text-xs shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 transition"
+            className={`flex-1 md:flex-none px-3.5 py-2 rounded-xl text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5 transition ${
+              copiedQuick
+                ? 'bg-emerald-600 shadow-emerald-500/20'
+                : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 shadow-cyan-500/20'
+            }`}
           >
-            <Copy className="w-3.5 h-3.5" />
-            <span>Salin Link Web Tugas</span>
+            {copiedQuick ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-white" />
+                <span>Tersalin ke Clipboard!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                <span>Salin Link Web Tugas</span>
+              </>
+            )}
           </button>
           <button
             onClick={onOpenAssignmentModal}
@@ -254,7 +269,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-2xl font-black text-emerald-400">
-              Rp {totalRevenue.toLocaleString('id-ID')}
+              Rp {(Number(totalRevenue) || 0).toLocaleString('id-ID')}
             </span>
           </div>
           <div className="mt-3 pt-3 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">

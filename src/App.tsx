@@ -27,7 +27,7 @@ import {
   CargoManifest,
   DatabaseConnectionConfig
 } from './types/maritime';
-import { ShieldCheck, Anchor, Waves, Radio, Bell, X, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Anchor, Waves, Radio, Bell, X, CheckCircle2, RotateCcw, AlertTriangle } from 'lucide-react';
 
 export default function App() {
   // Authentication state
@@ -56,6 +56,7 @@ export default function App() {
   const [isTicketBLModalOpen, setIsTicketBLModalOpen] = useState(false);
   const [autoOpenAddVessel, setAutoOpenAddVessel] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [realtimeToast, setRealtimeToast] = useState<{ title: string; message: string; timestamp: number } | null>(null);
 
   // Load initial data
@@ -248,13 +249,20 @@ export default function App() {
     setDbConfig(updated);
   };
 
-  // Reset demo data
+  // Reset demo data modal handlers
   const handleResetData = () => {
-    if (window.confirm('Reset seluruh data kapal, rute, kargo, dan manifest ke data simulasi awal?')) {
-      maritimeService.resetToInitial();
-      loadData();
-      alert('Data operasional kapal dan manifest telah dikembalikan ke kondisi awal.');
-    }
+    setIsResetModalOpen(true);
+  };
+
+  const handleConfirmReset = () => {
+    maritimeService.resetToInitial();
+    loadData();
+    setIsResetModalOpen(false);
+    setRealtimeToast({
+      title: 'Reset Data Berhasil',
+      message: 'Seluruh data operasional kapal, rute, kargo, dan manifest telah dikembalikan ke kondisi default simulasi.',
+      timestamp: Date.now()
+    });
   };
 
   // Auth roles
@@ -475,6 +483,43 @@ export default function App() {
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
       />
+
+      {/* Custom Reset Confirmation Modal (Replacing window.confirm / window.alert) */}
+      {isResetModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl shadow-2xl p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+                <RotateCcw className="w-5 h-5 animate-spin-slow" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">Reset Data Simulasi?</h3>
+                <p className="text-xs text-slate-400">Kembalikan ke data pabrik bawaan</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+              Tindakan ini akan mengembalikan data <strong>Armada Kapal, Pelabuhan, Rute, Kargo, Manifes Penumpang, dan Akun Demo</strong> ke kondisi awal simulasi. Data baru yang Anda inputkan akan diperbarui ke setelan default.
+            </p>
+
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                onClick={() => setIsResetModalOpen(false)}
+                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleConfirmReset}
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-500 hover:to-rose-500 text-white text-xs font-bold shadow-lg shadow-amber-600/20 transition flex items-center gap-1.5"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Ya, Reset Data</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

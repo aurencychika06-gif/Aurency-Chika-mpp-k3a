@@ -65,6 +65,7 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
   const [activeSubTab, setActiveSubTab] = useState<'kapal' | 'pelabuhan' | 'rute' | 'muatan'>('kapal');
   const [searchTerm, setSearchTerm] = useState('');
   const [notificationMessage, setNotificationMessage] = useState<string | null>(null);
+  const [vesselModalError, setVesselModalError] = useState<string | null>(null);
 
   // Modal states
   const [isVesselModalOpen, setIsVesselModalOpen] = useState(false);
@@ -149,6 +150,7 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
   // Handlers for Vessel
   const openAddVessel = () => {
     setEditingVessel(null);
+    setVesselModalError(null);
     setVesselForm({
       name: '',
       callSign: '',
@@ -171,6 +173,7 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
 
   const openEditVessel = (v: Vessel) => {
     setEditingVessel(v);
+    setVesselModalError(null);
     setVesselForm({
       name: v.name || '',
       callSign: v.callSign || '',
@@ -193,16 +196,17 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
 
   const handleSaveVessel = (e: React.FormEvent) => {
     e.preventDefault();
+    setVesselModalError(null);
     try {
       const cleanName = (vesselForm.name || '').trim();
       const cleanCallSign = (vesselForm.callSign || '').trim().toUpperCase();
 
       if (!cleanName) {
-        alert('Nama kapal wajib diisi!');
+        setVesselModalError('Nama kapal wajib diisi!');
         return;
       }
       if (!cleanCallSign) {
-        alert('Call sign kapal wajib diisi!');
+        setVesselModalError('Call sign kapal wajib diisi!');
         return;
       }
 
@@ -235,7 +239,7 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
       setIsVesselModalOpen(false);
       setTimeout(() => setNotificationMessage(null), 4000);
     } catch (err: any) {
-      alert(`Gagal menyimpan kapal: ${err.message || 'Terjadi kesalahan sistem'}`);
+      setVesselModalError(`Gagal menyimpan kapal: ${err.message || 'Terjadi kesalahan sistem'}`);
     }
   };
 
@@ -525,13 +529,13 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
                         <div className="text-[10px] text-slate-500 font-mono mt-0.5">IMO: {vessel.imoNumber}</div>
                       </td>
                       <td className="px-4 py-3 font-semibold text-slate-100">
-                        {vessel.passengerCapacity.toLocaleString('id-ID')} Jiwa
+                        {(Number(vessel.passengerCapacity) || 0).toLocaleString('id-ID')} Jiwa
                       </td>
                       <td className="px-4 py-3 font-semibold text-purple-300">
-                        {vessel.maxDwtTon.toLocaleString('id-ID')} Ton
+                        {(Number(vessel.maxDwtTon) || 0).toLocaleString('id-ID')} Ton
                       </td>
                       <td className="px-4 py-3 text-slate-300">
-                        {vessel.carCapacity} Mobil / {vessel.truckCapacity} Truk
+                        {vessel.carCapacity ?? 0} Mobil / {vessel.truckCapacity ?? 0} Truk
                       </td>
                       <td className="px-4 py-3 text-slate-300">
                         {vessel.captainName}
@@ -694,10 +698,10 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
                         {route.estimatedHours} Jam
                       </td>
                       <td className="px-4 py-3 font-semibold text-emerald-400">
-                        Rp {route.baseFareEconomy.toLocaleString('id-ID')}
+                        Rp {(Number(route.baseFareEconomy) || 0).toLocaleString('id-ID')}
                       </td>
                       <td className="px-4 py-3 font-semibold text-purple-400">
-                        Rp {route.baseFareVehicle.toLocaleString('id-ID')}
+                        Rp {(Number(route.baseFareVehicle) || 0).toLocaleString('id-ID')}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1.5">
@@ -764,7 +768,7 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
                         </span>
                       </td>
                       <td className="px-4 py-3 font-semibold text-emerald-400">
-                        Rp {cat.baseTariff.toLocaleString('id-ID')}
+                        Rp {(Number(cat.baseTariff) || 0).toLocaleString('id-ID')}
                       </td>
                       <td className="px-4 py-3 text-slate-100 font-medium">
                         {cat.maxWeightTon} Ton
@@ -973,6 +977,13 @@ export const MasterDataView: React.FC<MasterDataViewProps> = ({
                   />
                 </div>
               </div>
+
+              {vesselModalError && (
+                <div className="p-3 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400" />
+                  <span>{vesselModalError}</span>
+                </div>
+              )}
 
               <div className="pt-3 border-t border-slate-800 flex justify-end gap-2">
                 <button
